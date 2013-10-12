@@ -1,0 +1,4 @@
+name: fuzzylogic
+description: A fuzzy logic module.
+dependencies:
+  unittest: any
