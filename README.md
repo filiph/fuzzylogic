@@ -7,5 +7,5 @@ to create and work with fuzzy rules.
 The goal of this project is to make it extremely easy to implement fuzzy
 logic when creating:
 
-1) Artificial intelligence in Web-based games.
-2) Intelligent user experience in websites.
+1. Artificial intelligence in Web-based games.
+2. Intelligent user experience in websites.
