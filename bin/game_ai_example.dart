@@ -41,33 +41,17 @@ main() {
   
   // Add rules.
   var frb = new FuzzyRuleBase();
-  frb.addRule(
-      antecedent: distanceToTarget.Far & bazookaAmmo.Loads, 
-      consequent: bazookaDesirability.Desirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Far & bazookaAmmo.Okay, 
-      consequent: bazookaDesirability.Undesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Far & bazookaAmmo.Low, 
-      consequent: bazookaDesirability.Undesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Medium & bazookaAmmo.Loads, 
-      consequent: bazookaDesirability.VeryDesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Medium & bazookaAmmo.Okay, 
-      consequent: bazookaDesirability.VeryDesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Medium & bazookaAmmo.Low, 
-      consequent: bazookaDesirability.Desirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Close & bazookaAmmo.Loads, 
-      consequent: bazookaDesirability.Undesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Close & bazookaAmmo.Okay, 
-      consequent: bazookaDesirability.Undesirable);
-  frb.addRule(
-      antecedent: distanceToTarget.Close & bazookaAmmo.Low, 
-      consequent: bazookaDesirability.Undesirable);
+  frb.addRules([
+      (distanceToTarget.Far & bazookaAmmo.Loads) >> (bazookaDesirability.Desirable),
+      (distanceToTarget.Far & bazookaAmmo.Okay) >> (bazookaDesirability.Undesirable),
+      (distanceToTarget.Far & bazookaAmmo.Low) >> (bazookaDesirability.Undesirable),
+      (distanceToTarget.Medium & bazookaAmmo.Loads) >> (bazookaDesirability.VeryDesirable),
+      (distanceToTarget.Medium & bazookaAmmo.Okay) >> (bazookaDesirability.VeryDesirable),
+      (distanceToTarget.Medium & bazookaAmmo.Low) >> (bazookaDesirability.Desirable),
+      (distanceToTarget.Close & bazookaAmmo.Loads) >> (bazookaDesirability.Undesirable),
+      (distanceToTarget.Close & bazookaAmmo.Okay) >> (bazookaDesirability.Undesirable),
+      (distanceToTarget.Close & bazookaAmmo.Low) >> (bazookaDesirability.Undesirable)
+  ]);
   
   // Create the placeholder for output.
   var bazookaOutput = bazookaDesirability.createOutputPlaceholder();
