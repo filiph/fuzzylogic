@@ -55,6 +55,7 @@ main() {
   
   // Create the placeholder for output.
   var bazookaOutput = bazookaDesirability.createOutputPlaceholder();
+  
   // Use the fuzzy inference engine.
   frb.resolve(
       inputs: [distanceToTarget.assign(200), bazookaAmmo.assign(8)], 
