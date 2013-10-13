@@ -1,8 +1,11 @@
 # Fuzzy Logic for Dart
 
-This is a module for fuzzy logic in Dart. It takes inspiration from the
-FCL (Fuzzy Control Language), but otherwise strives to be a 'Dart-y' way
-to create and work with fuzzy rules.
+This is a module for fuzzy logic in [Dart]. It takes some inspiration from the
+[FCL (Fuzzy Control Language) IEC 1131-7 specification][FCLSpec], but otherwise
+strives to be a 'Dart-y' way to create and work with fuzzy rules.
+
+[FCLSpec]: http://www.fuzzytech.com/binaries/ieccd1.pdf
+[Dart]: https://www.dartlang.org/
 
 The goal of this project is to make it extremely easy to implement fuzzy
 logic when creating:
@@ -13,8 +16,10 @@ logic when creating:
 ## Example of use
 
 Here's code that implements the "Designing FLVs for Weapon Selection" (pp. 
-425-437) fuzzy logic example from Mat Buckland's excellent book _Programming
-Game AI by Example (2005)._
+425-437) fuzzy logic example from Mat Buckland's excellent book _[Programming
+Game AI by Example (2005)][Buckland]._
+
+[Buckland]: http://www.amazon.com/Programming-Game-Example-Mat-Buckland/dp/1556220782
 
     // Set up variables.
     var distanceToTarget = new Distance();
@@ -73,11 +78,12 @@ This creates a fuzzy language variable that can be then instantiated by calling
 `distance.Medium` and `distance.Far`. 
 
 When decision is needed according to some crisp distance `n`, you create a 
-Fuzzy_Value_ from the Fuzzy_Variable_ by calling `distance.assign(n)`. This
+fuzzy _value_ from the fuzzy _variable_ by calling `distance.assign(n)`. This
 value is then passed to a FuzzyRuleBase `resolve()` method as input.
- 
+
+	var currentDistance = distance.assign(200);  // We are 200 meters away.
     frb.resolve(
-        inputs: [distance.assign(200)], 
+        inputs: [currentDistance], 
         outputs: [bazookaOutput]);
         
 ### Fuzzy Rules
@@ -88,10 +94,10 @@ definition of fuzzy rules.
     (distance.Far & ammo.Loads) >> (bazookaDesirability.Desirable)
     
 Note that the overloaded operators are the _bitwise_ ones, not the boolean ones. 
-It's `&` for logical AND, `|` for logical OR, `~` for logical NOT (as opposed to
-`&&`, `||` and `!`). This is because the boolean operators cannot be overridden,
-and – more importantly – the use of slightly different operands helps convey the
-fact that this is _not_ boolean logic.
+It's `&` for logical AND, `|` for logical OR, and `~` for logical NOT (as 
+opposed to `&&`, `||` and `!`). This is because the boolean operators cannot be
+overridden, and – more importantly – the use of slightly different operands
+helps convey the fact that this is _not_ boolean logic.
 
 Dart will correctly issue a warning if you try to use the boolean operands to
 construct a fuzzy rule.
