@@ -1,4 +1,4 @@
-# FuzzyLogic for the Dart programming language
+# Fuzzy Logic for Dart
 
 This is a module for fuzzy logic in Dart. It takes inspiration from the
 FCL (Fuzzy Control Language), but otherwise strives to be a 'Dart-y' way
@@ -79,3 +79,30 @@ value is then passed to a FuzzyRuleBase `resolve()` method as input.
     frb.resolve(
         inputs: [distance.assign(200)], 
         outputs: [bazookaOutput]);
+        
+### Fuzzy Rules
+
+This library uses Dart's operator overloading for easier and more readable
+definition of fuzzy rules.
+
+    (distance.Far & ammo.Loads) >> (bazookaDesirability.Desirable)
+    
+Note that the overloaded operators are the _bitwise_ ones, not the boolean ones. 
+It's `&` for logical AND, `|` for logical OR, `~` for logical NOT (as opposed to
+`&&`, `||` and `!`). This is because the boolean operators cannot be overridden,
+and – more importantly – the use of slightly different operands helps convey the
+fact that this is _not_ boolean logic.
+
+Dart will correctly issue a warning if you try to use the boolean operands to
+construct a fuzzy rule.
+
+Also note the `>>` operand, meaning THEN. It was chosen for its resemblance to
+the [mathematical implication 
+symbol](http://en.wikipedia.org/wiki/Material_conditional) (⇒). Because the 
+operand has low precedence, **the antecedent and the conseqent (what comes 
+before and after the symbol) need to be in brackets.**
+
+Operator overloading tends to be controversial and can be very confusing. I am
+hoping that in this case, its advantages clearly outweigh the disadvantages. You
+will be writing a lot of rules in your fuzzy language modules. The more terse
+the symbology, the more readable the rule.
