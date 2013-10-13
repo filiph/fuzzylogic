@@ -60,6 +60,10 @@ class FuzzyValue<T> {
     _crispValueConfidence = degreesOfTruth.values.reduce(max);
   }
   
+  /**
+   * Sets the degree of truth for a [FuzzySet] which is a part of this 
+   * [FuzzyValue].
+   */
   void setDegreeOfTruth(FuzzySet<T> set, num degreeOfTruth) {
     assert(variable.sets.contains(set));
     var currentDegreeOfTruth = degreesOfTruth[set];

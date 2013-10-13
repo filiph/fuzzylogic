@@ -10,14 +10,30 @@ part of fuzzylogic;
  */
 class FuzzySet<T> extends FuzzyNode {
   
-  num getDegreeOfMembership(List<FuzzyValue> inputs) {
+  /**
+   * Finds the crisp value using the given [inputs], then finds the degree
+   * of membership of that crisp value in the set. 
+   */
+  num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     var fuzzyValue = inputs.singleWhere(
         (FuzzyValue value) => value.variable == this.variable);
     // TODO: for non-crisp values
-    var dom = membershipFunction.getDegreeOfMembership(fuzzyValue.crispValue);
+    return getDegreeOfMembership(fuzzyValue.crispValue);
+  }
+
+  /**
+   * Finds the degree of membership of a given crisp value in the set.
+   */
+  num getDegreeOfMembership(T crispValue) {
+    var dom = membershipFunction.getDegreeOfMembership(crispValue);
     return dom;
   }
   
+  /**
+   * When the FuzzyValue (of which this FuzzySet is a part) is in the
+   * consequent of a FuzzyRule, it will be assigned a degree of truth according
+   * to the degree of truth of the antecedent. 
+   */
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     outputs.where((fuzzyValue) => fuzzyValue.variable == this.variable)
       .forEach((fuzzyValue) {
@@ -26,7 +42,7 @@ class FuzzySet<T> extends FuzzyNode {
   }
   
   /**
-   * Returns the domain of membership (DOM) of he given value.
+   * Returns the domain of membership (DOM) of the given value.
    */
   final MembershipFunction<T> membershipFunction;
   
@@ -53,15 +69,15 @@ class FuzzySet<T> extends FuzzyNode {
           new LinearManifold([[floor, 0], [peak, 1], [ceiling, 0]]),
       representativeValue = peak;
   
-  FuzzySet.LeftShoulder(num minimum, num peak, num ceiling) :
+  FuzzySet.LeftShoulder(num representative, num peak, num ceiling) :
       membershipFunction = 
           new LinearManifold([[peak, 1], [ceiling, 0]]),
-      representativeValue = minimum + (peak - minimum) / 2;
+      representativeValue = representative;
   
-  FuzzySet.RightShoulder(num floor, num peak, num maximum) :
+  FuzzySet.RightShoulder(num floor, num peak, num representative) :
       membershipFunction = 
           new LinearManifold([[floor, 0], [peak, 1]]),
-      representativeValue = peak + (maximum - peak) / 2;
+      representativeValue = representative;
   
   FuzzySet.Trapezoid(num floor, num peakStart, num peakEnd, num maximum) :
       membershipFunction = 

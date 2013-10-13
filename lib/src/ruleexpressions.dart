@@ -26,7 +26,7 @@ abstract class FuzzyNode {
     }
   }
   
-  num getDegreeOfMembership(List<FuzzyValue> inputs);
+  num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs);
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs);
   
   FuzzyNode operator &(FuzzyNode other) => new _FuzzyAnd(this, other);
@@ -55,9 +55,9 @@ class _FuzzyAnd extends FuzzyTerm {
     children = new Set.from([a, b]);
   }
   
-  num getDegreeOfMembership(List<FuzzyValue> inputs) {
+  num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     num minimum = children.fold(null, (num value, FuzzyNode n) {
-      num dom = n.getDegreeOfMembership(inputs);
+      num dom = n.getDegreeOfMembershipWithInputs(inputs);
       if (value == null) return dom;
       if (dom < value) return dom;
       return value;
@@ -78,9 +78,9 @@ class _FuzzyOr extends FuzzyTerm {
     children = new Set.from([a, b]);
   }
   
-  num getDegreeOfMembership(List<FuzzyValue> inputs) {
+  num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     num maximum = children.fold(null, (num value, FuzzyNode n) {
-      num dom = n.getDegreeOfMembership(inputs);
+      num dom = n.getDegreeOfMembershipWithInputs(inputs);
       if (value == null || value < dom) return dom;
     });
     return maximum;
@@ -102,8 +102,8 @@ class _FuzzyNot extends FuzzyTerm {
     children = new Set.from([a]);
   }
   
-  num getDegreeOfMembership(List<FuzzyValue> inputs) {
-    return (1 - children.single.getDegreeOfMembership(inputs));
+  num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
+    return (1 - children.single.getDegreeOfMembershipWithInputs(inputs));
   }
   
   num _degreeOfTruth;

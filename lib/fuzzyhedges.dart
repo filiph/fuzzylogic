@@ -19,7 +19,7 @@ class _FuzzyHedge extends FuzzyTerm {
   final _HedgeFunction hedgeFunction;
   
   num getDegreeOfMembership(List<FuzzyValue> inputs) {
-    return hedgeFunction(children.single.getDegreeOfMembership(inputs));
+    return hedgeFunction(children.single.getDegreeOfMembershipWithInputs(inputs));
   }
   
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {

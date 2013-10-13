@@ -15,7 +15,7 @@ class FuzzyRule {
    * it to the consequent.
    */
   void resolve(List<FuzzyValue> inputs, List<FuzzyValue> outputs) {
-    num degreeOfTruth = antecedent.getDegreeOfMembership(inputs);
+    num degreeOfTruth = antecedent.getDegreeOfMembershipWithInputs(inputs);
     consequent.setDegreeOfTruth(degreeOfTruth, outputs);
   }
 }
