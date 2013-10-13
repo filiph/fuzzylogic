@@ -37,6 +37,15 @@ class FuzzyValue<T> {
   set crispValue(T value) {
     _crispValue = value;
     _crispValueConfidence = 1.0;
+    _setDegreesOfTruthFromCrispValue();
+  }
+  
+  /**
+   * Sets degrees of truth of a variable which has been assigned a crisp value.
+   */
+  void _setDegreesOfTruthFromCrispValue() {
+    variable.sets.forEach((set) => 
+        set.setDegreeOfTruth(set.getDegreeOfMembership(_crispValue), [this]));
   }
   
   /**
