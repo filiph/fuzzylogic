@@ -14,7 +14,7 @@ logic when creating:
 
 Here's code that implements the "Designing FLVs for Weapon Selection" (pp. 
 425-437) fuzzy logic example from Mat Buckland's excellent book _Programming
-Game AI by Example._
+Game AI by Example (2005)._
 
     // Set up variables.
     var distanceToTarget = new Distance();
