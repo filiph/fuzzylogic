@@ -1,4 +1,6 @@
 name: fuzzylogic
+version: 0.0.1
 description: A fuzzy logic module.
-dependencies:
+author: Filip Hracek
+dev_dependencies:
   unittest: any
