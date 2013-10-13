@@ -1,8 +1,8 @@
 part of fuzzylogic;
 
 /**
- * FuzzyValue is a FuzzyVariable that is initialized with a value (normally
- * by calling [FuzzyVariable.assign()] just before resolving the [RuleBase].
+ * FuzzyValue is a FuzzyVariable that was initialized with a value (normally
+ * by calling [FuzzyVariable.assign()] just before resolving the [RuleBase]).
  */
 class FuzzyValue<T> {
   FuzzyValue(this.variable, [T crispValue]) {

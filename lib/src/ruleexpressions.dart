@@ -1,7 +1,9 @@
 part of fuzzylogic;
 
 /**
- * A node is the basic building block of a fuzzy rule expression.
+ * A node is the basic building block of a fuzzy rule expression. It can be
+ * a leaf node (i.e. one fuzzy set) or a composite node (e.g. a fuzzy AND
+ * between two fuzzy sets).
  */
 abstract class FuzzyNode {
   FuzzyNode parent;
@@ -37,9 +39,12 @@ abstract class FuzzyNode {
  * or manifolds into one.
  * 
  * Examples: AND, OR and NOT.
+ * 
+ * Note: [FuzzyTerm] is currently synonymous with [FuzzyNode], but is kept
+ * separate in case the distinction is needed in the future. It also makes the
+ * code more readable.
  */
 abstract class FuzzyTerm extends FuzzyNode {
-  
 }
 
 /**
