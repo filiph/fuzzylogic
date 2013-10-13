@@ -1,7 +1,7 @@
 name: fuzzylogic
 version: 0.1.0
 description: A fuzzy logic module.
-author: Filip Hracek
+author: Filip Hracek <filip.hracek@gmail.com>
 homepage: https://github.com/filiph/fuzzylogic
 dev_dependencies:
   unittest: any
