@@ -81,7 +81,11 @@ class _FuzzyOr extends FuzzyTerm {
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     num maximum = children.fold(null, (num value, FuzzyNode n) {
       num dom = n.getDegreeOfMembershipWithInputs(inputs);
-      if (value == null || value < dom) return dom;
+      if (value == null || value < dom) {
+        return dom;
+      } else {
+        return value;
+      }
     });
     return maximum;
   }
