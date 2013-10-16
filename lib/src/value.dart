@@ -65,9 +65,7 @@ class FuzzyValue<T> {
       _crispValue = numerator / denominator;
     } else {
       _crispValue = numerator / denominator;
-      // TODO: the (T == num) doesn't work in dart2js 
-      // uncomment below and delete above
-      //throw new StateError("Cannot compute AvMax for non-numeric values.");
+      throw new StateError("Cannot compute AvMax for non-numeric values.");
     }
     _crispValueConfidence = degreesOfTruth.values.reduce(max);
   }
