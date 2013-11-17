@@ -65,7 +65,7 @@ class FuzzyValue<T> {
       _crispValue = numerator / denominator;
     } else {
       _crispValue = numerator / denominator;
-      throw new StateError("Cannot compute AvMax for non-numeric values.");
+      throw new StateError("Cannot compute AvMax for non-numeric values ($T).");
     }
     _crispValueConfidence = degreesOfTruth.values.reduce(max);
   }

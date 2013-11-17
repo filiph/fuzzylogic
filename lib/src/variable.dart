@@ -4,13 +4,13 @@ part of fuzzylogic;
  * Fuzzy
  */
 class FuzzyVariable<T> {
-  List<FuzzySet> sets;
+  List<FuzzySet<T>> sets;
 
   /**
    * This *must* be called before the variable is worked with.
    */
   void init() {
-    sets.forEach((FuzzySet fuzzySet) => fuzzySet.variable = this);
+    sets.forEach((FuzzySet<T> fuzzySet) => fuzzySet.variable = this);
   }
   
   /**
