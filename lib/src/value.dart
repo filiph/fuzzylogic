@@ -16,7 +16,7 @@ class FuzzyValue<T> {
   }
 
   FuzzyVariable<T> variable;
-  Map<FuzzySet<T>, num> degreesOfTruth; // TODO get - throw if unitialized
+  Map<FuzzySet<T>, num> degreesOfTruth; // TODO get - throw if uninitialized
   T _crispValue; // TODO get, set
   num _crispValueConfidence;
 

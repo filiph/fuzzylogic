@@ -43,6 +43,11 @@ class FuzzyRuleBase {
 
   void resolve({List<FuzzyValue> inputs, List<FuzzyValue> outputs}) {
     // TODO: infer what rules to run based on outputs
+    for (FuzzyValue output in outputs) {
+      if (output.crispValue != null) {
+        throw new FuzzyLogicStateError("Can't use output value twice.");
+      }
+    }
 
     rules.forEach((rule) => rule.resolve(inputs, outputs));
   }

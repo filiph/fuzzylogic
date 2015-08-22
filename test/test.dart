@@ -120,12 +120,7 @@ main() {
             (bazookaDesirability.VeryDesirable),
         (distanceToTarget.Medium & bazookaAmmo.Low) >>
             (bazookaDesirability.Desirable),
-        (distanceToTarget.Close & bazookaAmmo.Loads) >>
-            (bazookaDesirability.Undesirable),
-        (distanceToTarget.Close & bazookaAmmo.Okay) >>
-            (bazookaDesirability.Undesirable),
-        (distanceToTarget.Close & bazookaAmmo.Low) >>
-            (bazookaDesirability.Undesirable)
+        (distanceToTarget.Close) >> (bazookaDesirability.Undesirable)
       ]);
 
       // Create the placeholder for output.
@@ -144,6 +139,20 @@ main() {
           closeTo(0.67, 0.01));
       expect(bazookaOutput.crispValue, greaterThan(60));
       expect(bazookaOutput.crispValue, lessThan(84));
+
+      // Throws when trying to use the same output value twice
+      expect(() => frb.resolve(
+              inputs: [distanceToTarget.assign(5), bazookaAmmo.assign(8)],
+              outputs: [bazookaOutput]),
+          throwsA(new isInstanceOf<FuzzyLogicStateError>()));
+
+      // Another try
+      var bazookaOutput2 = bazookaDesirability.createOutputPlaceholder();
+      frb.resolve(
+          inputs: [distanceToTarget.assign(5), bazookaAmmo.assign(8)],
+          outputs: [bazookaOutput2]);
+
+      expect(bazookaOutput2.crispValue, lessThan(10));
     });
   });
 }
