@@ -12,7 +12,7 @@ class FuzzyVariable<T> {
   void init() {
     sets.forEach((FuzzySet<T> fuzzySet) => fuzzySet.variable = this);
   }
-  
+
   /**
    * Assigns the variable with a crisp value (that has a degree of membership
    * in various FuzzySets of the variable). This creates a [FuzzyValue] which
@@ -22,7 +22,7 @@ class FuzzyVariable<T> {
     var fuzzyValue = new FuzzyValue<T>(this, crispValue);
     return fuzzyValue;
   }
-  
+
   /**
    * Creates a blank [FuzzyValue] from this variable. This blank value can be
    * then used as output variable for a [FuzzyRuleBase.resolve] method, 

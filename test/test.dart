@@ -5,13 +5,13 @@ import 'dart:math';
 
 class TestEmptyStringMembershipFunction extends MembershipFunction<String> {
   num getDegreeOfMembership(String s) =>
-      max(1 - s.length / 10, 0);  // 'True' for empty string.
+      max(1 - s.length / 10, 0); // 'True' for empty string.
 }
 
 main() {
   group("FuzzySet", () {
     test("works with non-numeric crisp values", () {
-      var emptyStringSet = 
+      var emptyStringSet =
           new FuzzySet(new TestEmptyStringMembershipFunction(), "");
       expect(emptyStringSet.getDegreeOfMembership(""), 1.0);
       expect(emptyStringSet.getDegreeOfMembership("12345"), 0.5);
@@ -55,14 +55,14 @@ main() {
       var hot = new FuzzySet.RightShoulder(25, 30, 35);
       roomTemperature.sets = [cold, comfortable, hot];
       roomTemperature.init();
-      
+
       var currentRoomTemperature = roomTemperature.assign(0);
-      
+
       cold.setDegreeOfTruth(1.0, [currentRoomTemperature]);
       expect(currentRoomTemperature.degreesOfTruth[cold], 1.0);
     });
   });
-  
+
   group("FuzzyValue", () {
     test("computes degrees of truth and crisp value", () {
       var roomTemperature = new FuzzyVariable();
@@ -71,31 +71,31 @@ main() {
       var hot = new FuzzySet.RightShoulder(25, 30, 35);
       roomTemperature.sets = [cold, comfortable, hot];
       roomTemperature.init();
-      
+
       var currentRoomTemperature = roomTemperature.assign(0);
-      
+
       expect(currentRoomTemperature.degreesOfTruth[cold], 1.0);
       expect(currentRoomTemperature.degreesOfTruth[hot], 0.0);
       expect(currentRoomTemperature.crispValue, lessThan(22));
-      
+
       currentRoomTemperature = roomTemperature.assign(28);
-      
+
       expect(currentRoomTemperature.degreesOfTruth[cold], 0.0);
-      expect(currentRoomTemperature.degreesOfTruth[comfortable], 
-          greaterThan(0.0));
+      expect(
+          currentRoomTemperature.degreesOfTruth[comfortable], greaterThan(0.0));
       expect(currentRoomTemperature.degreesOfTruth[comfortable], lessThan(1.0));
       expect(currentRoomTemperature.degreesOfTruth[hot], greaterThan(0.0));
       expect(currentRoomTemperature.degreesOfTruth[hot], lessThan(1.0));
-      expect(currentRoomTemperature.degreesOfTruth[comfortable], 
+      expect(currentRoomTemperature.degreesOfTruth[comfortable],
           lessThan(currentRoomTemperature.degreesOfTruth[hot]));
       expect(currentRoomTemperature.crispValue, greaterThan(22));
     });
   });
-  
+
   // TODO: hedges
   // TODO: fuzzy rule
   // TODO: fuzzy ruleset
-  
+
   group("The whole system", () {
     test("correctly computes the 'Designing FLVs for Weapon Selection' example "
         "from Mat Buckland's book", () {
@@ -104,34 +104,43 @@ main() {
       var distanceToTarget = new Distance();
       var bazookaAmmo = new Ammo();
       var bazookaDesirability = new Desirability();
-      
+
       // Add rules.
       var frb = new FuzzyRuleBase();
       frb.addRules([
-                    (distanceToTarget.Far & bazookaAmmo.Loads) >> (bazookaDesirability.Desirable),
-                    (distanceToTarget.Far & bazookaAmmo.Okay) >> (bazookaDesirability.Undesirable),
-                    (distanceToTarget.Far & bazookaAmmo.Low) >> (bazookaDesirability.Undesirable),
-                    (distanceToTarget.Medium & bazookaAmmo.Loads) >> (bazookaDesirability.VeryDesirable),
-                    (distanceToTarget.Medium & bazookaAmmo.Okay) >> (bazookaDesirability.VeryDesirable),
-                    (distanceToTarget.Medium & bazookaAmmo.Low) >> (bazookaDesirability.Desirable),
-                    (distanceToTarget.Close & bazookaAmmo.Loads) >> (bazookaDesirability.Undesirable),
-                    (distanceToTarget.Close & bazookaAmmo.Okay) >> (bazookaDesirability.Undesirable),
-                    (distanceToTarget.Close & bazookaAmmo.Low) >> (bazookaDesirability.Undesirable)
-                    ]);
-      
+        (distanceToTarget.Far & bazookaAmmo.Loads) >>
+            (bazookaDesirability.Desirable),
+        (distanceToTarget.Far & bazookaAmmo.Okay) >>
+            (bazookaDesirability.Undesirable),
+        (distanceToTarget.Far & bazookaAmmo.Low) >>
+            (bazookaDesirability.Undesirable),
+        (distanceToTarget.Medium & bazookaAmmo.Loads) >>
+            (bazookaDesirability.VeryDesirable),
+        (distanceToTarget.Medium & bazookaAmmo.Okay) >>
+            (bazookaDesirability.VeryDesirable),
+        (distanceToTarget.Medium & bazookaAmmo.Low) >>
+            (bazookaDesirability.Desirable),
+        (distanceToTarget.Close & bazookaAmmo.Loads) >>
+            (bazookaDesirability.Undesirable),
+        (distanceToTarget.Close & bazookaAmmo.Okay) >>
+            (bazookaDesirability.Undesirable),
+        (distanceToTarget.Close & bazookaAmmo.Low) >>
+            (bazookaDesirability.Undesirable)
+      ]);
+
       // Create the placeholder for output.
       var bazookaOutput = bazookaDesirability.createOutputPlaceholder();
-      
+
       // Use the fuzzy inference engine.
       frb.resolve(
-          inputs: [distanceToTarget.assign(200), bazookaAmmo.assign(8)], 
+          inputs: [distanceToTarget.assign(200), bazookaAmmo.assign(8)],
           outputs: [bazookaOutput]);
-      
-      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.Desirable], 
+
+      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.Desirable],
           closeTo(0.2, 0.01));
-      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.Undesirable], 
+      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.Undesirable],
           closeTo(0.33, 0.01));
-      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.VeryDesirable], 
+      expect(bazookaOutput.degreesOfTruth[bazookaDesirability.VeryDesirable],
           closeTo(0.67, 0.01));
       expect(bazookaOutput.crispValue, greaterThan(60));
       expect(bazookaOutput.crispValue, lessThan(84));
@@ -143,7 +152,7 @@ class Distance extends FuzzyVariable<num> {
   var Close = new FuzzySet.LeftShoulder(0, 25, 150);
   var Medium = new FuzzySet.Triangle(25, 150, 300);
   var Far = new FuzzySet.RightShoulder(150, 300, 400);
-  
+
   Distance() {
     sets = [Close, Medium, Far];
     init();
@@ -154,7 +163,7 @@ class Ammo extends FuzzyVariable<int> {
   var Low = new FuzzySet.LeftShoulder(0, 0, 10);
   var Okay = new FuzzySet.Triangle(0, 10, 30);
   var Loads = new FuzzySet.RightShoulder(10, 30, 40);
-  
+
   Ammo() {
     sets = [Low, Okay, Loads];
     init();
@@ -165,7 +174,7 @@ class Desirability extends FuzzyVariable<num> {
   var Undesirable = new FuzzySet.LeftShoulder(0, 20, 50);
   var Desirable = new FuzzySet.Triangle(20, 50, 70);
   var VeryDesirable = new FuzzySet.RightShoulder(50, 70, 100);
-  
+
   Desirability() {
     sets = [Undesirable, Desirable, VeryDesirable];
     init();

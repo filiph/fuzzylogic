@@ -15,7 +15,6 @@ library fuzzylogic;
 
 import 'dart:math';
 
-
 part 'src/variable.dart';
 part 'src/value.dart';
 part 'src/set.dart';

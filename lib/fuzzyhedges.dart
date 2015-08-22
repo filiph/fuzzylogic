@@ -15,13 +15,14 @@ class _FuzzyHedge extends FuzzyTerm {
   _FuzzyHedge(FuzzyNode a, this.hedgeFunction) {
     children = new Set.from([a]);
   }
-  
+
   final _HedgeFunction hedgeFunction;
-  
+
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
-    return hedgeFunction(children.single.getDegreeOfMembershipWithInputs(inputs));
+    return hedgeFunction(
+        children.single.getDegreeOfMembershipWithInputs(inputs));
   }
-  
+
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     // TODO: change DOT through hedgeFunction?
     children.single.setDegreeOfTruth(degreeOfTruth, outputs);
@@ -30,7 +31,7 @@ class _FuzzyHedge extends FuzzyTerm {
 
 typedef num _HedgeFunction(num degreeOfMembership);
 
-FuzzyNode very(FuzzyNode node) => 
+FuzzyNode very(FuzzyNode node) =>
     new _FuzzyHedge(node, (num dom) => pow(dom, 2));
-FuzzyNode fairly(FuzzyNode node) => 
+FuzzyNode fairly(FuzzyNode node) =>
     new _FuzzyHedge(node, (num dom) => sqrt(dom));

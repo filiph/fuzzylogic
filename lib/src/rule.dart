@@ -7,9 +7,9 @@ part of fuzzylogic;
 class FuzzyRule {
   FuzzyNode antecedent;
   FuzzyNode consequent;
-  
+
   FuzzyRule(this.antecedent, this.consequent);
-  
+
   /**
    * Finds out the degree of membership (truth) of the antecedent and applies
    * it to the consequent.
