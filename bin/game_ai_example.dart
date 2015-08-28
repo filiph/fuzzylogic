@@ -54,11 +54,7 @@ main() {
         (bazookaDesirability.VeryDesirable),
     (distanceToTarget.Medium & bazookaAmmo.Low) >>
         (bazookaDesirability.Desirable),
-    (distanceToTarget.Close & bazookaAmmo.Loads) >>
-        (bazookaDesirability.Undesirable),
-    (distanceToTarget.Close & bazookaAmmo.Okay) >>
-        (bazookaDesirability.Undesirable),
-    (distanceToTarget.Close & bazookaAmmo.Low) >>
+    (distanceToTarget.Close) >>
         (bazookaDesirability.Undesirable)
   ]);
 
