@@ -7,6 +7,11 @@ class FuzzyVariable<T> {
   List<FuzzySet<T>> sets;
 
   /**
+   * Optional name, for logging.
+   */
+  String name;
+
+  /**
    * This *must* be called before the variable is worked with.
    */
   void init() {

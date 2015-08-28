@@ -14,7 +14,9 @@
 library fuzzylogic;
 
 import 'dart:math';
+import 'package:logging/logging.dart';
 
+part 'src/logging.dart';
 part 'src/exception.dart';
 part 'src/variable.dart';
 part 'src/value.dart';

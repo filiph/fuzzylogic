@@ -12,11 +12,12 @@ import 'fuzzylogic.dart';
 import 'dart:math';
 
 class _FuzzyHedge extends FuzzyTerm {
-  _FuzzyHedge(FuzzyNode a, this.hedgeFunction) {
+  _FuzzyHedge(FuzzyNode a, this.hedgeFunction, this.name) {
     children = new Set.from([a]);
   }
 
   final _HedgeFunction hedgeFunction;
+  final String name;
 
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     return hedgeFunction(
@@ -27,11 +28,16 @@ class _FuzzyHedge extends FuzzyTerm {
     // TODO: change DOT through hedgeFunction?
     children.single.setDegreeOfTruth(degreeOfTruth, outputs);
   }
+
+  toString() {
+    var a = children.first;
+    return "$name($a)";
+  }
 }
 
 typedef num _HedgeFunction(num degreeOfMembership);
 
 FuzzyNode very(FuzzyNode node) =>
-    new _FuzzyHedge(node, (num dom) => pow(dom, 2));
+    new _FuzzyHedge(node, (num dom) => pow(dom, 2), "very");
 FuzzyNode fairly(FuzzyNode node) =>
-    new _FuzzyHedge(node, (num dom) => sqrt(dom));
+    new _FuzzyHedge(node, (num dom) => sqrt(dom), "fairly");

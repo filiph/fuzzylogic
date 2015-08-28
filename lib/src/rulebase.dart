@@ -46,6 +46,7 @@ class FuzzyRuleBase {
     for (FuzzyValue output in outputs) {
       if (output.crispValue != null) {
         throw new FuzzyLogicStateError("Can't use output value twice.");
+//        logger.warning("Shouldn't be using output value twice.");
       }
     }
 

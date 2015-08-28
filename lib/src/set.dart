@@ -17,6 +17,9 @@ class FuzzySet<T> extends FuzzyNode {
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     var fuzzyValue = inputs
         .singleWhere((FuzzyValue value) => value.variable == this.variable);
+
+    logger.fine("- getting degree of membership for " + _nameOrUnnamed(variable.name, "FuzzyVariable"));
+
     // TODO: for non-crisp values
     return getDegreeOfMembership(fuzzyValue.crispValue);
   }
@@ -26,6 +29,7 @@ class FuzzySet<T> extends FuzzyNode {
    */
   num getDegreeOfMembership(T crispValue) {
     var dom = membershipFunction.getDegreeOfMembership(crispValue);
+    logger.fine("- degree of membership for " + _nameOrUnnamed(name, "set") + " (repr=$representativeValue) is ${(dom * 100).round()}");
     return dom;
   }
 
@@ -58,27 +62,38 @@ class FuzzySet<T> extends FuzzyNode {
   FuzzyVariable<T> variable;
 
   /**
+   * Optional name of the fuzzy set (for logging).
+   */
+  String name;
+
+  toString() {
+    if (variable.name == null) return "FuzzySet<$name>";
+    return "${variable.name}<$name>";
+  }
+
+  /**
    * The most generic constructor. The crisp values don't need to be numeric
    * (e.g. they can be objects of custom classes) - the only restriction is that
    * a [MembershipFunction] is given that can convert a crisp value to a degree
    * of membership, and a [representativeValue] is given for the set.
    */
-  FuzzySet(this.membershipFunction, this.representativeValue);
+  FuzzySet(this.membershipFunction, this.representativeValue,
+           [this.name]);
 
-  FuzzySet.Triangle(num floor, num peak, num ceiling)
+  FuzzySet.Triangle(num floor, num peak, num ceiling, [this.name])
       : membershipFunction = new LinearManifold(
           [[floor, 0], [peak, 1], [ceiling, 0]]),
         representativeValue = peak;
 
-  FuzzySet.LeftShoulder(num representative, num peak, num ceiling)
+  FuzzySet.LeftShoulder(num representative, num peak, num ceiling, [this.name])
       : membershipFunction = new LinearManifold([[peak, 1], [ceiling, 0]]),
         representativeValue = representative;
 
-  FuzzySet.RightShoulder(num floor, num peak, num representative)
+  FuzzySet.RightShoulder(num floor, num peak, num representative, [this.name])
       : membershipFunction = new LinearManifold([[floor, 0], [peak, 1]]),
         representativeValue = representative;
 
-  FuzzySet.Trapezoid(num floor, num peakStart, num peakEnd, num maximum)
+  FuzzySet.Trapezoid(num floor, num peakStart, num peakEnd, num maximum, [this.name])
       : membershipFunction = new LinearManifold(
           [[floor, 0], [peakStart, 1], [peakEnd, 1], [maximum, 0]]),
         representativeValue = peakStart + (peakEnd - peakStart) / 2;

@@ -79,9 +79,24 @@ class FuzzyValue<T> {
     assert(variable.sets.contains(set));
     var currentDegreeOfTruth = degreesOfTruth[set];
     if (currentDegreeOfTruth == null) {
+      logger.fine("- setting degree of truth for $set to $degreeOfTruth");
       degreesOfTruth[set] = degreeOfTruth;
     } else if (currentDegreeOfTruth < degreeOfTruth) {
+      logger.fine("- updating degree of truth for $set to $degreeOfTruth");
       degreesOfTruth[set] = degreeOfTruth;
+    } else {
+      logger.fine(
+          "- degree of truth for $set already higher than $degreeOfTruth (currently $currentDegreeOfTruth)");
     }
+  }
+
+  String visualizeInAscii() {
+    StringBuffer buf = new StringBuffer();
+    for (FuzzySet set in degreesOfTruth.keys) {
+      buf.write("Set with representative value of ${set.representativeValue} ");
+      buf.writeln(
+          "has a degree if thruth = ${(degreesOfTruth[set] * 100).round()}");
+    }
+    return buf.toString();
   }
 }

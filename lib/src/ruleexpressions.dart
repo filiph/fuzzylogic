@@ -67,6 +67,12 @@ class _FuzzyAnd extends FuzzyTerm {
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     children.forEach((node) => node.setDegreeOfTruth(degreeOfTruth, outputs));
   }
+
+  toString() {
+    var a = children.first;
+    var b = children.last;
+    return "($a & $b)";
+  }
 }
 
 /**
@@ -95,6 +101,12 @@ class _FuzzyOr extends FuzzyTerm {
     // Cannot say for sure which one is truthful.
     _degreeOfTruth = degreeOfTruth;
   }
+
+  toString() {
+    var a = children.first;
+    var b = children.last;
+    return "($a | $b)";
+  }
 }
 
 /**
@@ -114,5 +126,10 @@ class _FuzzyNot extends FuzzyTerm {
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     // Cannot say for sure what this means for the underlying child. TODO
     _degreeOfTruth = degreeOfTruth;
+  }
+
+  toString() {
+    var a = children.first;
+    return "~$a";
   }
 }

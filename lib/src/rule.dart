@@ -15,7 +15,10 @@ class FuzzyRule {
    * it to the consequent.
    */
   void resolve(List<FuzzyValue> inputs, List<FuzzyValue> outputs) {
+    logger.fine("Resolving rule $this");
     num degreeOfTruth = antecedent.getDegreeOfMembershipWithInputs(inputs);
     consequent.setDegreeOfTruth(degreeOfTruth, outputs);
   }
+
+  toString() => "$antecedent >> $consequent";
 }
