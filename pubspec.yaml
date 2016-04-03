@@ -3,7 +3,12 @@ version: 0.2.0
 description: A fuzzy logic module.
 author: Filip Hracek <filip.hracek@gmail.com>
 homepage: https://github.com/filiph/fuzzylogic
+
+environment:
+    sdk: ">=1.8.0 <2.0.0"
+
 dependencies:
   logging: ^0.11.2
+
 dev_dependencies:
   test: ^0.12.13
