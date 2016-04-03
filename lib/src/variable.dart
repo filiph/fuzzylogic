@@ -3,7 +3,7 @@ part of fuzzylogic;
 /**
  * Fuzzy
  */
-class FuzzyVariable<T> {
+class FuzzyVariable<T extends num> {
   List<FuzzySet<T>> sets;
 
   /**

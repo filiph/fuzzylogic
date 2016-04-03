@@ -8,7 +8,7 @@ part of fuzzylogic;
  * would be such that is [FuzzyTrue] for distances in range of 5 meters, then 
  * slopes towards [FuzzyFalse] for ranges 5-20 meters (for example).
  */
-class FuzzySet<T> extends FuzzyNode {
+class FuzzySet<T extends num> extends FuzzyNode {
 
   /**
    * Finds the crisp value using the given [inputs], then finds the degree
@@ -80,21 +80,21 @@ class FuzzySet<T> extends FuzzyNode {
   FuzzySet(this.membershipFunction, this.representativeValue,
            [this.name]);
 
-  FuzzySet.Triangle(num floor, num peak, num ceiling, [this.name])
-      : membershipFunction = new LinearManifold(
+  FuzzySet.Triangle(T floor, T peak, T ceiling, [this.name])
+      : membershipFunction = new LinearManifold<T>(
           [[floor, 0], [peak, 1], [ceiling, 0]]),
         representativeValue = peak;
 
-  FuzzySet.LeftShoulder(num representative, num peak, num ceiling, [this.name])
-      : membershipFunction = new LinearManifold([[peak, 1], [ceiling, 0]]),
+  FuzzySet.LeftShoulder(T representative, T peak, T ceiling, [this.name])
+      : membershipFunction = new LinearManifold<T>([[peak, 1], [ceiling, 0]]),
         representativeValue = representative;
 
-  FuzzySet.RightShoulder(num floor, num peak, num representative, [this.name])
-      : membershipFunction = new LinearManifold([[floor, 0], [peak, 1]]),
+  FuzzySet.RightShoulder(T floor, T peak, T representative, [this.name])
+      : membershipFunction = new LinearManifold<T>([[floor, 0], [peak, 1]]),
         representativeValue = representative;
 
-  FuzzySet.Trapezoid(num floor, num peakStart, num peakEnd, num maximum, [this.name])
-      : membershipFunction = new LinearManifold(
+  FuzzySet.Trapezoid(T floor, T peakStart, T peakEnd, T maximum, [this.name])
+      : membershipFunction = new LinearManifold<T>(
           [[floor, 0], [peakStart, 1], [peakEnd, 1], [maximum, 0]]),
         representativeValue = peakStart + (peakEnd - peakStart) / 2;
 }

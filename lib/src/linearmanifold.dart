@@ -8,7 +8,7 @@ part of fuzzylogic;
  * "line segments" that together form a shape like a triangle, a shoulder or
  * a trapezoid.
  */
-class LinearManifold extends MembershipFunction<num> {
+class LinearManifold<T extends num> extends MembershipFunction<T> {
   List<_LinearManifoldSegment> segments;
 
   final num _lowestCrispValue;
