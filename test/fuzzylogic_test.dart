@@ -11,12 +11,13 @@ class TestEmptyStringMembershipFunction extends MembershipFunction<String> {
 main() {
   group("FuzzySet", () {
     test("works with non-numeric crisp values", () {
-      var emptyStringSet =
-          new FuzzySet(new TestEmptyStringMembershipFunction(), "");
-      expect(emptyStringSet.getDegreeOfMembership(""), 1.0);
-      expect(emptyStringSet.getDegreeOfMembership("12345"), 0.5);
-      expect(emptyStringSet.getDegreeOfMembership("1234567890"), 0.0);
-    });
+      // TODO: figure out if we really need this
+      // var emptyStringSet =
+      //     new FuzzySet(new TestEmptyStringMembershipFunction(), "");
+      // expect(emptyStringSet.getDegreeOfMembership(""), 1.0);
+      // expect(emptyStringSet.getDegreeOfMembership("12345"), 0.5);
+      // expect(emptyStringSet.getDegreeOfMembership("1234567890"), 0.0);
+    }, skip: 'This would not be type-sound');
     test("creates default manifolds", () {
       var triangle = new FuzzySet.Triangle(0, 10, 100);
       expect(triangle.getDegreeOfMembership(-10), 0.0);
@@ -49,7 +50,7 @@ main() {
     });
     // TODO: test saw-like manifolds
     test("finds the variable which it is assigned to", () {
-      var roomTemperature = new FuzzyVariable();
+      var roomTemperature = new FuzzyVariable<int>();
       var cold = new FuzzySet.LeftShoulder(10, 15, 22);
       var comfortable = new FuzzySet.Trapezoid(15, 20, 25, 30);
       var hot = new FuzzySet.RightShoulder(25, 30, 35);
@@ -65,7 +66,7 @@ main() {
 
   group("FuzzyValue", () {
     test("computes degrees of truth and crisp value", () {
-      var roomTemperature = new FuzzyVariable();
+      var roomTemperature = new FuzzyVariable<int>();
       var cold = new FuzzySet.LeftShoulder(10, 15, 22);
       var comfortable = new FuzzySet.Trapezoid(15, 20, 25, 30);
       var hot = new FuzzySet.RightShoulder(25, 30, 35);
@@ -97,9 +98,9 @@ main() {
   // TODO: fuzzy ruleset
 
   group("The whole system", () {
-    test("correctly computes the 'Designing FLVs for Weapon Selection' example "
+    test(
+        "correctly computes the 'Designing FLVs for Weapon Selection' example "
         "from Mat Buckland's book", () {
-
       // Set up variables.
       var distanceToTarget = new Distance();
       var bazookaAmmo = new Ammo();
@@ -141,10 +142,11 @@ main() {
       expect(bazookaOutput.crispValue, lessThan(84));
 
       // Throws when trying to use the same output value twice
-      expect(() => frb.resolve(
+      expect(
+          () => frb.resolve(
               inputs: [distanceToTarget.assign(5), bazookaAmmo.assign(8)],
               outputs: [bazookaOutput]),
-          throwsA(new isInstanceOf<FuzzyLogicStateError>()));
+          throwsA(const TypeMatcher<FuzzyLogicStateError>()));
 
       // Another try
       var bazookaOutput2 = bazookaDesirability.createOutputPlaceholder();
@@ -157,7 +159,7 @@ main() {
   });
 }
 
-class Distance extends FuzzyVariable<num> {
+class Distance extends FuzzyVariable<int> {
   var Close = new FuzzySet.LeftShoulder(0, 25, 150);
   var Medium = new FuzzySet.Triangle(25, 150, 300);
   var Far = new FuzzySet.RightShoulder(150, 300, 400);
@@ -179,7 +181,7 @@ class Ammo extends FuzzyVariable<int> {
   }
 }
 
-class Desirability extends FuzzyVariable<num> {
+class Desirability extends FuzzyVariable<int> {
   var Undesirable = new FuzzySet.LeftShoulder(0, 20, 50);
   var Desirable = new FuzzySet.Triangle(20, 50, 70);
   var VeryDesirable = new FuzzySet.RightShoulder(50, 70, 100);

@@ -1,6 +1,6 @@
 import 'package:fuzzylogic/fuzzylogic.dart';
 
-class Distance extends FuzzyVariable<num> {
+class Distance extends FuzzyVariable<int> {
   var Close = new FuzzySet.LeftShoulder(0, 25, 150);
   var Medium = new FuzzySet.Triangle(25, 150, 300);
   var Far = new FuzzySet.RightShoulder(150, 300, 400);
@@ -22,7 +22,7 @@ class Ammo extends FuzzyVariable<int> {
   }
 }
 
-class Desirability extends FuzzyVariable<num> {
+class Desirability extends FuzzyVariable<int> {
   var Undesirable = new FuzzySet.LeftShoulder(0, 20, 50);
   var Desirable = new FuzzySet.Triangle(20, 50, 70);
   var VeryDesirable = new FuzzySet.RightShoulder(50, 70, 100);
@@ -54,8 +54,7 @@ main() {
         (bazookaDesirability.VeryDesirable),
     (distanceToTarget.Medium & bazookaAmmo.Low) >>
         (bazookaDesirability.Desirable),
-    (distanceToTarget.Close) >>
-        (bazookaDesirability.Undesirable)
+    (distanceToTarget.Close) >> (bazookaDesirability.Undesirable)
   ]);
 
   // Create the placeholder for output.

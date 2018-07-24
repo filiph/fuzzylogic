@@ -95,11 +95,9 @@ class _FuzzyOr extends FuzzyTerm {
     return maximum;
   }
 
-  num _degreeOfTruth;
-
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     // Cannot say for sure which one is truthful.
-    _degreeOfTruth = degreeOfTruth;
+    throw UnimplementedError();
   }
 
   toString() {
@@ -121,11 +119,9 @@ class _FuzzyNot extends FuzzyTerm {
     return (1 - children.single.getDegreeOfMembershipWithInputs(inputs));
   }
 
-  num _degreeOfTruth;
-
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
-    // Cannot say for sure what this means for the underlying child. TODO
-    _degreeOfTruth = degreeOfTruth;
+    // Cannot say for sure what this means for the underlying child.
+    throw UnimplementedError();
   }
 
   toString() {

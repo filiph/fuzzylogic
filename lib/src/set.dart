@@ -9,16 +9,16 @@ part of fuzzylogic;
  * slopes towards [FuzzyFalse] for ranges 5-20 meters (for example).
  */
 class FuzzySet<T extends num> extends FuzzyNode {
-
   /**
    * Finds the crisp value using the given [inputs], then finds the degree
-   * of membership of that crisp value in the set. 
+   * of membership of that crisp value in the set.
    */
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     var fuzzyValue = inputs
         .singleWhere((FuzzyValue value) => value.variable == this.variable);
 
-    logger.fine("- getting degree of membership for " + _nameOrUnnamed(variable.name, "FuzzyVariable"));
+    logger.fine("- getting degree of membership for " +
+        _nameOrUnnamed(variable.name, "FuzzyVariable"));
 
     // TODO: for non-crisp values
     return getDegreeOfMembership(fuzzyValue.crispValue);
@@ -29,14 +29,16 @@ class FuzzySet<T extends num> extends FuzzyNode {
    */
   num getDegreeOfMembership(T crispValue) {
     var dom = membershipFunction.getDegreeOfMembership(crispValue);
-    logger.fine("- degree of membership for " + _nameOrUnnamed(name, "set") + " (repr=$representativeValue) is ${(dom * 100).round()}");
+    logger.fine("- degree of membership for " +
+        _nameOrUnnamed(name, "set") +
+        " (repr=$representativeValue) is ${(dom * 100).round()}");
     return dom;
   }
 
   /**
    * When the FuzzyValue (of which this FuzzySet is a part) is in the
    * consequent of a FuzzyRule, it will be assigned a degree of truth according
-   * to the degree of truth of the antecedent. 
+   * to the degree of truth of the antecedent.
    */
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     outputs
@@ -77,26 +79,40 @@ class FuzzySet<T extends num> extends FuzzyNode {
    * a [MembershipFunction] is given that can convert a crisp value to a degree
    * of membership, and a [representativeValue] is given for the set.
    */
-  FuzzySet(this.membershipFunction, this.representativeValue,
-           [this.name]);
+  FuzzySet(this.membershipFunction, this.representativeValue, [this.name]);
 
   FuzzySet.Triangle(T floor, T peak, T ceiling, [this.name])
-      : membershipFunction = new LinearManifold<T>(
-          [[floor, 0], [peak, 1], [ceiling, 0]]),
+      : membershipFunction = new LinearManifold<T>([
+          [floor, 0],
+          [peak, 1],
+          [ceiling, 0]
+        ]),
         representativeValue = peak;
 
   FuzzySet.LeftShoulder(T representative, T peak, T ceiling, [this.name])
-      : membershipFunction = new LinearManifold<T>([[peak, 1], [ceiling, 0]]),
+      : membershipFunction = new LinearManifold<T>([
+          [peak, 1],
+          [ceiling, 0]
+        ]),
         representativeValue = representative;
 
   FuzzySet.RightShoulder(T floor, T peak, T representative, [this.name])
-      : membershipFunction = new LinearManifold<T>([[floor, 0], [peak, 1]]),
+      : membershipFunction = new LinearManifold<T>([
+          [floor, 0],
+          [peak, 1]
+        ]),
         representativeValue = representative;
 
   FuzzySet.Trapezoid(T floor, T peakStart, T peakEnd, T maximum, [this.name])
-      : membershipFunction = new LinearManifold<T>(
-          [[floor, 0], [peakStart, 1], [peakEnd, 1], [maximum, 0]]),
-        representativeValue = peakStart + (peakEnd - peakStart) / 2;
+      : membershipFunction = new LinearManifold<T>([
+          [floor, 0],
+          [peakStart, 1],
+          [peakEnd, 1],
+          [maximum, 0]
+        ]),
+        representativeValue = T is double
+            ? peakStart + (peakEnd - peakStart) / 2
+            : peakStart + (peakEnd - peakStart) ~/ 2;
 }
 
 abstract class MembershipFunction<T> {

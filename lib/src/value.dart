@@ -52,8 +52,10 @@ class FuzzyValue<T extends num> {
    * Compute the crisp value using the Average of Maxima method.
    */
   void _computeCrispValue() {
-    num numerator = variable.sets.fold(0, (sum, fuzzySet) =>
-        sum + (fuzzySet.representativeValue as num) * degreesOfTruth[fuzzySet]);
+    num numerator = variable.sets.fold(
+        0,
+        (sum, fuzzySet) =>
+            sum + (fuzzySet.representativeValue) * degreesOfTruth[fuzzySet]);
     num denominator = degreesOfTruth.values.fold(0, (sum, dot) => sum + dot);
     if (denominator == 0) {
       // No confidence.

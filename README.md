@@ -1,5 +1,7 @@
 # Fuzzy Logic for Dart
 
+[![Build Status](https://travis-ci.org/filiph/fuzzylogic.svg?branch=master)](https://travis-ci.org/filiph/fuzzylogic)
+
 This is a module for fuzzy logic in [Dart]. It takes some inspiration from the
 [FCL (Fuzzy Control Language) IEC 1131-7 specification][FCLSpec], but otherwise
 strives to be a 'Dart-y' way to create and work with fuzzy rules.
