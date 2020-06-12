@@ -4,13 +4,14 @@ import 'package:fuzzylogic/fuzzylogic.dart';
 import 'dart:math';
 
 class TestEmptyStringMembershipFunction extends MembershipFunction<String> {
+  @override
   num getDegreeOfMembership(String s) =>
       max(1 - s.length / 10, 0); // 'True' for empty string.
 }
 
-main() {
-  group("FuzzySet", () {
-    test("works with non-numeric crisp values", () {
+void main() {
+  group('FuzzySet', () {
+    test('works with non-numeric crisp values', () {
       // TODO: figure out if we really need this
       // var emptyStringSet =
       //     new FuzzySet(new TestEmptyStringMembershipFunction(), "");
@@ -18,15 +19,15 @@ main() {
       // expect(emptyStringSet.getDegreeOfMembership("12345"), 0.5);
       // expect(emptyStringSet.getDegreeOfMembership("1234567890"), 0.0);
     }, skip: 'This would not be type-sound');
-    test("creates default manifolds", () {
-      var triangle = new FuzzySet.Triangle(0, 10, 100);
+    test('creates default manifolds', () {
+      var triangle = FuzzySet.Triangle(0, 10, 100);
       expect(triangle.getDegreeOfMembership(-10), 0.0);
       expect(triangle.getDegreeOfMembership(0), 0.0);
       expect(triangle.getDegreeOfMembership(5), 0.5);
       expect(triangle.getDegreeOfMembership(10), 1.0);
       expect(triangle.getDegreeOfMembership(100), 0.0);
       expect(triangle.getDegreeOfMembership(1000), 0.0);
-      var trapezoid = new FuzzySet.Trapezoid(10, 20, 30, 40);
+      var trapezoid = FuzzySet.Trapezoid(10, 20, 30, 40);
       expect(trapezoid.getDegreeOfMembership(-10), 0.0);
       expect(trapezoid.getDegreeOfMembership(10), 0.0);
       expect(trapezoid.getDegreeOfMembership(20), 1.0);
@@ -35,13 +36,13 @@ main() {
       expect(trapezoid.getDegreeOfMembership(35), 0.5);
       expect(trapezoid.getDegreeOfMembership(40), 0.0);
       expect(trapezoid.getDegreeOfMembership(400), 0.0);
-      var leftShoulder = new FuzzySet.LeftShoulder(0, 10, 50);
+      var leftShoulder = FuzzySet.LeftShoulder(0, 10, 50);
       expect(leftShoulder.getDegreeOfMembership(-10), 1.0);
       expect(leftShoulder.getDegreeOfMembership(0), 1.0);
       expect(leftShoulder.getDegreeOfMembership(10), 1.0);
       expect(leftShoulder.getDegreeOfMembership(50), 0.0);
       expect(leftShoulder.getDegreeOfMembership(100), 0.0);
-      var rightShoulder = new FuzzySet.RightShoulder(0, 10, 50);
+      var rightShoulder = FuzzySet.RightShoulder(0, 10, 50);
       expect(rightShoulder.getDegreeOfMembership(-10), 0.0);
       expect(rightShoulder.getDegreeOfMembership(0), 0.0);
       expect(rightShoulder.getDegreeOfMembership(10), 1.0);
@@ -49,11 +50,11 @@ main() {
       expect(rightShoulder.getDegreeOfMembership(100), 1.0);
     });
     // TODO: test saw-like manifolds
-    test("finds the variable which it is assigned to", () {
-      var roomTemperature = new FuzzyVariable<int>();
-      var cold = new FuzzySet.LeftShoulder(10, 15, 22);
-      var comfortable = new FuzzySet.Trapezoid(15, 20, 25, 30);
-      var hot = new FuzzySet.RightShoulder(25, 30, 35);
+    test('finds the variable which it is assigned to', () {
+      var roomTemperature = FuzzyVariable<int>();
+      var cold = FuzzySet.LeftShoulder(10, 15, 22);
+      var comfortable = FuzzySet.Trapezoid(15, 20, 25, 30);
+      var hot = FuzzySet.RightShoulder(25, 30, 35);
       roomTemperature.sets = [cold, comfortable, hot];
       roomTemperature.init();
 
@@ -64,12 +65,12 @@ main() {
     });
   });
 
-  group("FuzzyValue", () {
-    test("computes degrees of truth and crisp value", () {
-      var roomTemperature = new FuzzyVariable<int>();
-      var cold = new FuzzySet.LeftShoulder(10, 15, 22);
-      var comfortable = new FuzzySet.Trapezoid(15, 20, 25, 30);
-      var hot = new FuzzySet.RightShoulder(25, 30, 35);
+  group('FuzzyValue', () {
+    test('computes degrees of truth and crisp value', () {
+      var roomTemperature = FuzzyVariable<int>();
+      var cold = FuzzySet.LeftShoulder(10, 15, 22);
+      var comfortable = FuzzySet.Trapezoid(15, 20, 25, 30);
+      var hot = FuzzySet.RightShoulder(25, 30, 35);
       roomTemperature.sets = [cold, comfortable, hot];
       roomTemperature.init();
 
@@ -97,17 +98,17 @@ main() {
   // TODO: fuzzy rule
   // TODO: fuzzy ruleset
 
-  group("The whole system", () {
+  group('The whole system', () {
     test(
         "correctly computes the 'Designing FLVs for Weapon Selection' example "
         "from Mat Buckland's book", () {
       // Set up variables.
-      var distanceToTarget = new Distance();
-      var bazookaAmmo = new Ammo();
-      var bazookaDesirability = new Desirability();
+      var distanceToTarget = Distance();
+      var bazookaAmmo = Ammo();
+      var bazookaDesirability = Desirability();
 
       // Add rules.
-      var frb = new FuzzyRuleBase();
+      var frb = FuzzyRuleBase();
       frb.addRules([
         (distanceToTarget.Far & bazookaAmmo.Loads) >>
             (bazookaDesirability.Desirable),
@@ -160,9 +161,9 @@ main() {
 }
 
 class Distance extends FuzzyVariable<int> {
-  var Close = new FuzzySet.LeftShoulder(0, 25, 150);
-  var Medium = new FuzzySet.Triangle(25, 150, 300);
-  var Far = new FuzzySet.RightShoulder(150, 300, 400);
+  var Close = FuzzySet.LeftShoulder(0, 25, 150);
+  var Medium = FuzzySet.Triangle(25, 150, 300);
+  var Far = FuzzySet.RightShoulder(150, 300, 400);
 
   Distance() {
     sets = [Close, Medium, Far];
@@ -171,9 +172,9 @@ class Distance extends FuzzyVariable<int> {
 }
 
 class Ammo extends FuzzyVariable<int> {
-  var Low = new FuzzySet.LeftShoulder(0, 0, 10);
-  var Okay = new FuzzySet.Triangle(0, 10, 30);
-  var Loads = new FuzzySet.RightShoulder(10, 30, 40);
+  var Low = FuzzySet.LeftShoulder(0, 0, 10);
+  var Okay = FuzzySet.Triangle(0, 10, 30);
+  var Loads = FuzzySet.RightShoulder(10, 30, 40);
 
   Ammo() {
     sets = [Low, Okay, Loads];
@@ -182,9 +183,9 @@ class Ammo extends FuzzyVariable<int> {
 }
 
 class Desirability extends FuzzyVariable<int> {
-  var Undesirable = new FuzzySet.LeftShoulder(0, 20, 50);
-  var Desirable = new FuzzySet.Triangle(20, 50, 70);
-  var VeryDesirable = new FuzzySet.RightShoulder(50, 70, 100);
+  var Undesirable = FuzzySet.LeftShoulder(0, 20, 50);
+  var Desirable = FuzzySet.Triangle(20, 50, 70);
+  var VeryDesirable = FuzzySet.RightShoulder(50, 70, 100);
 
   Desirability() {
     sets = [Undesirable, Desirable, VeryDesirable];

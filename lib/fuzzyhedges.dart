@@ -1,11 +1,9 @@
-/**
- * By importing this library, you get the two most important fuzzy logic hedges:
- * [very] and [fairly].
- * 
- * This means you can do:
- * 
- *     (fairly(joke.funny) & very(situation.tense)) >> (laughter.loud)
- */
+/// By importing this library, you get the two most important fuzzy logic hedges:
+/// [very] and [fairly].
+///
+/// This means you can do:
+///
+///     (fairly(joke.funny) & very(situation.tense)) >> (laughter.loud)
 library fuzzyhedges;
 
 import 'fuzzylogic.dart';
@@ -13,31 +11,34 @@ import 'dart:math';
 
 class _FuzzyHedge extends FuzzyTerm {
   _FuzzyHedge(FuzzyNode a, this.hedgeFunction, this.name) {
-    children = new Set.from([a]);
+    children = <FuzzyNode>{a};
   }
 
   final _HedgeFunction hedgeFunction;
   final String name;
 
+  @override
   num getDegreeOfMembershipWithInputs(List<FuzzyValue> inputs) {
     return hedgeFunction(
         children.single.getDegreeOfMembershipWithInputs(inputs));
   }
 
+  @override
   void setDegreeOfTruth(num degreeOfTruth, List<FuzzyValue> outputs) {
     // TODO: change DOT through hedgeFunction?
     children.single.setDegreeOfTruth(degreeOfTruth, outputs);
   }
 
-  toString() {
+  @override
+  String toString() {
     var a = children.first;
-    return "$name($a)";
+    return '$name($a)';
   }
 }
 
-typedef num _HedgeFunction(num degreeOfMembership);
+typedef _HedgeFunction = num Function(num degreeOfMembership);
 
 FuzzyNode very(FuzzyNode node) =>
-    new _FuzzyHedge(node, (num dom) => pow(dom, 2), "very");
+    _FuzzyHedge(node, (num dom) => pow(dom, 2), 'very');
 FuzzyNode fairly(FuzzyNode node) =>
-    new _FuzzyHedge(node, (num dom) => sqrt(dom), "fairly");
+    _FuzzyHedge(node, (num dom) => sqrt(dom), 'fairly');

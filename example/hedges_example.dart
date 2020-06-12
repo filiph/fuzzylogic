@@ -2,9 +2,9 @@ import 'package:fuzzylogic/fuzzylogic.dart';
 import 'package:fuzzylogic/fuzzyhedges.dart';
 
 class Intelligence extends FuzzyVariable<int> {
-  var Stupid = new FuzzySet.LeftShoulder(0, 90, 100);
-  var Average = new FuzzySet.Triangle(90, 100, 110);
-  var Clever = new FuzzySet.RightShoulder(100, 110, 200);
+  var Stupid = FuzzySet.LeftShoulder(0, 90, 100);
+  var Average = FuzzySet.Triangle(90, 100, 110);
+  var Clever = FuzzySet.RightShoulder(100, 110, 200);
 
   Intelligence() {
     sets = [Stupid, Average, Clever];
@@ -13,8 +13,8 @@ class Intelligence extends FuzzyVariable<int> {
 }
 
 class Workload extends FuzzyVariable<int> {
-  var Manageable = new FuzzySet.LeftShoulder(0, 40, 50);
-  var VeryBusy = new FuzzySet.RightShoulder(40, 50, 84);
+  var Manageable = FuzzySet.LeftShoulder(0, 40, 50);
+  var VeryBusy = FuzzySet.RightShoulder(40, 50, 84);
 
   Workload() {
     sets = [Manageable, VeryBusy];
@@ -23,10 +23,10 @@ class Workload extends FuzzyVariable<int> {
 }
 
 class Amount extends FuzzyVariable<int> {
-  var None = new FuzzySet.LeftShoulder(0, 0, 1);
-  var One = new FuzzySet.Triangle(0, 1, 2);
-  var Couple = new FuzzySet.Triangle(1, 2, 4);
-  var Many = new FuzzySet.RightShoulder(2, 5, 10);
+  var None = FuzzySet.LeftShoulder(0, 0, 1);
+  var One = FuzzySet.Triangle(0, 1, 2);
+  var Couple = FuzzySet.Triangle(1, 2, 4);
+  var Many = FuzzySet.RightShoulder(2, 5, 10);
 
   Amount() {
     sets = [None, One, Couple, Many];
@@ -34,12 +34,12 @@ class Amount extends FuzzyVariable<int> {
   }
 }
 
-main() {
-  var intelligence = new Intelligence();
-  var workload = new Workload();
-  var amountOfBooks = new Amount();
+void main() {
+  var intelligence = Intelligence();
+  var workload = Workload();
+  var amountOfBooks = Amount();
 
-  var frb = new FuzzyRuleBase();
+  var frb = FuzzyRuleBase();
   frb.addRules([
     ((intelligence.Average | intelligence.Clever) &
             fairly(workload.Manageable)) >>

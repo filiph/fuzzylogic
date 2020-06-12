@@ -1,9 +1,9 @@
 import 'package:fuzzylogic/fuzzylogic.dart';
 
 class Distance extends FuzzyVariable<int> {
-  var Close = new FuzzySet.LeftShoulder(0, 25, 150);
-  var Medium = new FuzzySet.Triangle(25, 150, 300);
-  var Far = new FuzzySet.RightShoulder(150, 300, 400);
+  var Close = FuzzySet.LeftShoulder(0, 25, 150);
+  var Medium = FuzzySet.Triangle(25, 150, 300);
+  var Far = FuzzySet.RightShoulder(150, 300, 400);
 
   Distance() {
     sets = [Close, Medium, Far];
@@ -12,9 +12,9 @@ class Distance extends FuzzyVariable<int> {
 }
 
 class Ammo extends FuzzyVariable<int> {
-  var Low = new FuzzySet.LeftShoulder(0, 0, 10);
-  var Okay = new FuzzySet.Triangle(0, 10, 30);
-  var Loads = new FuzzySet.RightShoulder(10, 30, 40);
+  var Low = FuzzySet.LeftShoulder(0, 0, 10);
+  var Okay = FuzzySet.Triangle(0, 10, 30);
+  var Loads = FuzzySet.RightShoulder(10, 30, 40);
 
   Ammo() {
     sets = [Low, Okay, Loads];
@@ -23,9 +23,9 @@ class Ammo extends FuzzyVariable<int> {
 }
 
 class Desirability extends FuzzyVariable<int> {
-  var Undesirable = new FuzzySet.LeftShoulder(0, 20, 50);
-  var Desirable = new FuzzySet.Triangle(20, 50, 70);
-  var VeryDesirable = new FuzzySet.RightShoulder(50, 70, 100);
+  var Undesirable = FuzzySet.LeftShoulder(0, 20, 50);
+  var Desirable = FuzzySet.Triangle(20, 50, 70);
+  var VeryDesirable = FuzzySet.RightShoulder(50, 70, 100);
 
   Desirability() {
     sets = [Undesirable, Desirable, VeryDesirable];
@@ -33,14 +33,14 @@ class Desirability extends FuzzyVariable<int> {
   }
 }
 
-main() {
+void main() {
   // Set up variables.
-  var distanceToTarget = new Distance();
-  var bazookaAmmo = new Ammo();
-  var bazookaDesirability = new Desirability();
+  var distanceToTarget = Distance();
+  var bazookaAmmo = Ammo();
+  var bazookaDesirability = Desirability();
 
   // Add rules.
-  var frb = new FuzzyRuleBase();
+  var frb = FuzzyRuleBase();
   frb.addRules([
     (distanceToTarget.Far & bazookaAmmo.Loads) >>
         (bazookaDesirability.Desirable),
